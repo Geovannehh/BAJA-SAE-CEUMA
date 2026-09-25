@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baja SAE Brasil — Projeto Off-Road</title>
+<meta name="description" content="Site técnico do projeto conceitual Baja SAE Brasil: estrutura, suspensão, motor, CVT, eletrônica, sensores, telemetria, software embarcado e monitoramento de regras.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="track-line" aria-hidden="true"></div>
+
+<header class="nav" id="topo">
+  <div class="nav-inner container">
+    <a class="brand" href="#topo">
+      <span class="brand-mark">BAJA</span><span class="brand-sub">SAE&nbsp;BRASIL</span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#projeto" data-nav>O Projeto</a>
+      <a href="#prototipo" data-nav>Protótipo 3D</a>
+      <a href="#mecanica" data-nav>Mecânica</a>
+      <a href="#eletronica" data-nav>Eletrônica</a>
+      <a href="#dados" data-nav>Dados &amp; Telemetria</a>
+      <a href="#programacao" data-nav>Programação</a>
+      <a href="#materiais" data-nav>Materiais</a>
+      <a href="#regras" data-nav>Regras SAE</a>
+      <a href="#downloads" data-nav>Downloads</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Baja SAE Brasil · Projeto conceitual</p>
+        <h1>Engenharia<br><span class="accent">em movimento.</span></h1>
+        <p class="hero-desc">Um veículo off-road de competição pensado peça por peça: chassi tubular, suspensão independente, transmissão CVT e uma central eletrônica que registra cada segundo de pista. Gire o protótipo ao lado e explore cada sistema.</p>
+        <div class="hero-actions">
+          <a href="#prototipo" class="btn btn-primary">Explorar protótipo 3D</a>
+          <a href="#eletronica" class="btn btn-ghost">Ver arquitetura elétrica</a>
+        </div>
+        <p class="hero-note">Valores conceituais de referência para um veículo classe Baja SAE Brasil — ver observações na seção Regras.</p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="visual-panel" id="visualPanel">
+          <canvas id="bajaCanvas"></canvas>
+          <div class="visual-loading" id="visualLoading">carregando protótipo…</div>
+
+          <div class="visual-top">
+            <div class="system-pills" id="systemPills">
+              <button class="pill is-active" data-system="completo">Completo</button>
+              <button class="pill" data-system="chassi">Chassi</button>
+              <button class="pill" data-system="suspensao">Suspensão</button>
+              <button class="pill" data-system="motor">Motor + CVT</button>
+              <button class="pill" data-system="eletronica">Eletrônica</button>
+            </div>
+          </div>
+
+          <div class="visual-bottom">
+            <button class="chip" id="explodeToggle" data-active="false">
+              <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 2 4 7v10l8 5 8-5V7l-8-5Zm0 2.3 5.8 3.6L12 11.5 6.2 7.9 12 4.3ZM6 9.6l5 3.1v6.5l-5-3.1V9.6Zm7 9.6v-6.5l5-3.1v6.5l-5 3.1Z"/></svg>
+              Vista explodida
+            </button>
+            <button class="chip" id="rotateToggle" data-active="true">
+              <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg>
+              Rotação automática
+            </button>
+            <span class="drag-hint">arraste para girar · scroll para zoom</span>
+          </div>
+        </div>
+
+        <div class="dims-card">
+          <div class="dims-row"><span>Comprimento</span><b>2.650 mm</b></div>
+          <div class="dims-row"><span>Largura</span><b>1.600 mm</b></div>
+          <div class="dims-row"><span>Entre-eixos</span><b>1.700 mm</b></div>
+          <div class="dims-row"><span>Vão livre</span><b>300 mm</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="quickstats">
+        <div class="qstat"><span class="qicon">▣</span><b>Aço SAE 1020</b><small>Estrutura tubular</small></div>
+        <div class="qstat"><span class="qicon">◇</span><b>Duplo A</b><small>Suspensão · 250mm curso</small></div>
+        <div class="qstat"><span class="qicon">●</span><b>Monocilíndrico</b><small>Motor + CVT</small></div>
+        <div class="qstat"><span class="qicon">◈</span><b>Corrente</b><small>Transmissão final</small></div>
+        <div class="qstat"><span class="qicon">▦</span><b>ESP32-S3</b><small>Central eletrônica</small></div>
+        <div class="qstat"><span class="qicon">◎</span><b>8+ sensores</b><small>Aquisição em tempo real</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O PROJETO -->
+  <section class="section" id="projeto">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">01 · Visão geral</p>
+        <h2>O projeto</h2>
+        <p>Uma plataforma técnica que reúne, em um único lugar, o conceito do veículo, sua eletrônica embarcada, o software de aquisição de dados e o acompanhamento do regulamento oficial da competição.</p>
+      </div>
+
+      <div class="grid-3 objective-grid">
+        <div class="panel">
+          <h4>Conceito do veículo</h4>
+          <p>Chassi tipo gaiola, um ocupante, quatro rodas off-road, suspensão independente, motor traseiro com CVT e transmissão final por corrente.</p>
+        </div>
+        <div class="panel">
+          <h4>Instrumentação própria</h4>
+          <p>Aquisição de dados independente dos sistemas críticos de segurança — freio, ré e chaves KILL continuam funcionando sem o microcontrolador.</p>
+        </div>
+        <div class="panel">
+          <h4>Regulamento acompanhado</h4>
+          <p>Monitoramento contínuo do regulamento oficial da SAE Brasil, com registro de emendas, informativos e prazos de entrega.</p>
+        </div>
+      </div>
+
+      <div class="panel flow-card">
+        <h4>Fluxo de desenvolvimento</h4>
+        <div class="stepper" id="devFlow">
+          <div class="step"><span>1</span>Regulamento</div>
+          <div class="step"><span>2</span>Requisitos</div>
+          <div class="step"><span>3</span>Conceitual</div>
+          <div class="step"><span>4</span>CAD</div>
+          <div class="step"><span>5</span>Simulações</div>
+          <div class="step"><span>6</span>Proj. elétrico</div>
+          <div class="step"><span>7</span>Firmware</div>
+          <div class="step"><span>8</span>Fabricação</div>
+          <div class="step"><span>9</span>Montagem</div>
+          <div class="step"><span>10</span>Testes</div>
+          <div class="step"><span>11</span>Validação</div>
+          <div class="step is-target"><span>12</span>Competição</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROTÓTIPO 3D / COMO FUNCIONA -->
+  <section class="section section-alt" id="prototipo">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">02 · Protótipo interativo</p>
+        <h2>Como o veículo funciona</h2>
+        <p>Escolha um sistema acima do modelo 3D — o texto abaixo muda para explicar o funcionamento daquela parte do veículo.</p>
+      </div>
+
+      <div class="how-grid">
+        <div class="how-legend">
+          <span class="dot dot-chassi"></span> Chassi
+          <span class="dot dot-suspensao"></span> Suspensão
+          <span class="dot dot-motor"></span> Motor + CVT
+          <span class="dot dot-eletronica"></span> Eletrônica
+        </div>
+
+        <div class="panel how-panel" id="howPanel">
+          <h4 id="howTitle">Visão geral do veículo</h4>
+          <p id="howText">O protótipo acima é montado como uma gaiola tubular sobre a qual se apoiam suspensão, motor, transmissão e a eletrônica embarcada. Use os botões sobre o modelo para isolar cada sistema e o toggle “Vista explodida” para separar os conjuntos no espaço.</p>
+          <div class="how-flow" id="howFlow">
+            <span>Motor</span><i>→</i><span>CVT</span><i>→</i><span>Transmissão final</span><i>→</i><span>Eixo / diferencial</span><i>→</i><span>Rodas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MECÂNICA -->
+  <section class="section" id="mecanica">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">03 · Mecânica</p>
+        <h2>Estrutura, suspensão, motor e CVT</h2>
+        <p>Os quatro subsistemas mecânicos que sustentam o veículo e definem seu comportamento no terreno.</p>
+      </div>
+
+      <div class="pill-tabs" id="mecTabs">
+        <button class="tab is-active" data-tab="estrutura">Estrutura</button>
+        <button class="tab" data-tab="suspensao2">Suspensão</button>
+        <button class="tab" data-tab="motor2">Motor</button>
+        <button class="tab" data-tab="cvt2">CVT</button>
+      </div>
+
+      <div class="tab-panel is-active" data-panel="estrutura">
+        <div class="grid-2">
+          <div class="panel">
+            <h4>Chassi tubular</h4>
+            <p>Estrutura concebida para proteção do piloto, rigidez, resistência a impactos e facilidade de manutenção. Serve de base de montagem para todos os demais subsistemas.</p>
+            <ul class="check-list">
+              <li>Proteção do piloto</li>
+              <li>Rigidez estrutural</li>
+              <li>Montagem dos subsistemas</li>
+              <li>Resistência a impactos</li>
+              <li>Facilidade de manutenção</li>
+            </ul>
+          </div>
+          <div class="panel tree-panel">
+            <h4>Árvore de conjuntos</h4>
+            <ul class="tree">
+              <li>Chassi
+                <ul>
+                  <li>Estrutura principal</li>
+                  <li>Proteção frontal</li>
+                  <li>Proteção lateral</li>
+                  <li>Suporte do banco</li>
+                  <li>Suporte do motor</li>
+                  <li>Suporte da transmissão</li>
+                  <li>Suspensão dianteira</li>
+                  <li>Suspensão traseira</li>
+                  <li>Suportes da eletrônica</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="suspensao2">
+        <div class="grid-2">
+          <div class="panel">
+            <h4>Função da suspensão</h4>
+            <ul class="check-list">
+              <li>Absorver impactos</li>
+              <li>Manter as rodas em contato com o terreno</li>
+              <li>Melhorar a estabilidade</li>
+              <li>Reduzir a vibração transmitida ao chassi</li>
+              <li>Aumentar a capacidade de transpor obstáculos</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <h4>Geometria</h4>
+            <p>Braços duplo A independentes nas quatro rodas, com amortecedores tipo coilover posicionados para maximizar o curso vertical em terreno irregular sem alterar significativamente a bitola.</p>
+            <div class="mini-stat-row">
+              <div><b>250 mm</b><small>curso estimado</small></div>
+              <div><b>4x</b><small>rodas independentes</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="motor2">
+        <div class="panel">
+          <h4>Motor</h4>
+          <p>Fornece a potência mecânica necessária para movimentar o veículo, entregue à CVT por meio de um eixo de saída acoplado à polia primária.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="cvt2">
+        <div class="panel">
+          <h4>Transmissão continuamente variável (CVT)</h4>
+          <p>Ajusta a relação de transmissão automaticamente conforme rotação, carga, velocidade e condição do terreno, mantendo o motor próximo da faixa ideal de torque.</p>
+          <div class="how-flow">
+            <span>Motor</span><i>→</i><span>CVT</span><i>→</i><span>Transmissão final</span><i>→</i><span>Eixo / diferencial</span><i>→</i><span>Rodas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELETRÔNICA -->
+  <section class="section section-alt" id="eletronica">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">04 · Eletrônica embarcada</p>
+        <h2>Arquitetura elétrica e segurança</h2>
+        <p>Os circuitos críticos de segurança são independentes do microcontrolador — freio, ré e chaves KILL continuam funcionando mesmo se a instrumentação falhar.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel diagram-panel">
+          <h4>Alimentação</h4>
+          <div class="flow-diagram">
+            <div class="fnode">Bateria 12V</div>
+            <div class="farrow"></div>
+            <div class="fnode">Fusível geral</div>
+            <div class="farrow"></div>
+            <div class="fnode">Bloco de distribuição</div>
+            <div class="fbranches">
+              <div class="fnode small">Circuito de freio</div>
+              <div class="fnode small">Circuito de ré</div>
+              <div class="fnode small">DAQ / Instrumentação</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Elementos de segurança</h4>
+          <ul class="check-list">
+            <li>Fusível geral</li>
+            <li>Duas chaves KILL</li>
+            <li>Luz de freio</li>
+            <li>Luz de ré</li>
+            <li>Alarme de ré, quando aplicável</li>
+            <li>Proteção contra inversão de polaridade</li>
+            <li>Proteção contra surtos</li>
+            <li>Alimentação separada da instrumentação</li>
+          </ul>
+          <p class="fine-print">Princípio de projeto: nenhum sistema de segurança obrigatório depende do firmware para operar.</p>
+        </div>
+      </div>
+
+      <div class="panel controller-panel">
+        <div class="controller-head">
+          <span class="chip-tag">Controlador principal</span>
+          <h4>ESP32-S3</h4>
+        </div>
+        <div class="tag-grid">
+          <span>Leitura de sensores</span>
+          <span>Processamento</span>
+          <span>Registro de dados</span>
+          <span>Comunicação</span>
+          <span>Interface com display</span>
+          <span>Telemetria</span>
+          <span>Watchdog</span>
+          <span>Autodiagnóstico</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DADOS E TELEMETRIA -->
+  <section class="section" id="dados">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">05 · Sensores, aquisição e telemetria</p>
+        <h2>Dados &amp; telemetria</h2>
+        <p>Uma malha de sensores alimenta o registro em cartão microSD, o display do piloto e o link de telemetria — sem nunca depender deste último para o veículo continuar operando.</p>
+      </div>
+
+      <div class="pill-tabs" id="dadosTabs">
+        <button class="tab is-active" data-tab="sensores">Sensores</button>
+        <button class="tab" data-tab="daq">Aquisição</button>
+        <button class="tab" data-tab="telemetria">Telemetria</button>
+        <button class="tab" data-tab="registro">Registro</button>
+      </div>
+
+      <div class="tab-panel is-active" data-panel="sensores">
+        <div class="panel table-wrap">
+          <table class="table-tech">
+            <thead><tr><th>Sensor</th><th>Função</th></tr></thead>
+            <tbody>
+              <tr><td>Hall — motor</td><td>RPM do motor</td></tr>
+              <tr><td>Hall — CVT primária</td><td>RPM da polia primária</td></tr>
+              <tr><td>Hall — CVT secundária</td><td>RPM da polia secundária</td></tr>
+              <tr><td>Hall — roda</td><td>Velocidade</td></tr>
+              <tr><td>IMU 6 eixos</td><td>Aceleração e rotação</td></tr>
+              <tr><td>GNSS</td><td>Posição e velocidade</td></tr>
+              <tr><td>Termopar tipo K</td><td>Temperatura</td></tr>
+              <tr><td>Sensor de direção</td><td>Ângulo do volante</td></tr>
+              <tr><td>ADC</td><td>Tensão da bateria</td></tr>
+              <tr><td>Entrada de freio</td><td>Estado do sistema</td></tr>
+              <tr><td>Entrada de ré</td><td>Registro de estado</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="daq">
+        <div class="grid-2">
+          <div class="panel diagram-panel">
+            <h4>Arquitetura de instrumentação</h4>
+            <div class="flow-diagram vertical">
+              <div class="fnode">Sensores</div>
+              <div class="farrow vertical"></div>
+              <div class="fnode">ESP32-S3</div>
+              <div class="fbranches">
+                <div class="fnode small">Display do piloto</div>
+                <div class="fnode small">microSD</div>
+                <div class="fnode small">Telemetria</div>
+                <div class="fnode small">Logs de diagnóstico</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel table-wrap">
+            <h4>Taxas de aquisição de referência</h4>
+            <table class="table-tech">
+              <thead><tr><th>Tarefa</th><th>Frequência</th></tr></thead>
+              <tbody>
+                <tr><td>Sensores principais</td><td>100 Hz</td></tr>
+                <tr><td>Logger</td><td>50 Hz</td></tr>
+                <tr><td>Display</td><td>10 Hz</td></tr>
+                <tr><td>Telemetria</td><td>10 Hz</td></tr>
+                <tr><td>Health check</td><td>1 Hz</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="telemetria">
+        <div class="grid-3">
+          <div class="panel"><h4>LoRa</h4><p>Longo alcance, baixa taxa de dados — indicado para telemetria de baixa frequência em áreas abertas.</p></div>
+          <div class="panel"><h4>Wi-Fi</h4><p>Alta taxa de dados em curta distância — útil no boxe e durante testes na equipe.</p></div>
+          <div class="panel"><h4>Bluetooth / Rádio</h4><p>Alternativas de curto alcance ou rádio dedicado, conforme o regulamento aplicável da prova.</p></div>
+        </div>
+        <p class="fine-print center">A operação do veículo continua funcional mesmo sem o link de telemetria ativo.</p>
+
+        <div class="panel telemetry-live">
+          <div class="telemetry-head">
+            <h4>Painel de telemetria — demonstração</h4>
+            <span class="live-badge">● AO VIVO (simulado)</span>
+          </div>
+          <div class="gauges">
+            <div class="gauge" id="gaugeRpm">
+              <div class="gauge-ring"></div>
+              <div class="gauge-center"><b id="gaugeRpmVal">3820</b><small>RPM</small></div>
+            </div>
+            <div class="gauge" id="gaugeSpeed">
+              <div class="gauge-ring"></div>
+              <div class="gauge-center"><b id="gaugeSpeedVal">28</b><small>km/h</small></div>
+            </div>
+            <div class="gauge" id="gaugeBatt">
+              <div class="gauge-ring"></div>
+              <div class="gauge-center"><b id="gaugeBattVal">12.6</b><small>V bateria</small></div>
+            </div>
+          </div>
+          <div class="mini-stat-row three">
+            <div><b id="tempMotor">82°C</b><small>Temp. motor</small></div>
+            <div><b id="tempCvt">68°C</b><small>Temp. CVT</small></div>
+            <div><b id="inclinacao">12°</b><small>Inclinação</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="registro">
+        <div class="panel">
+          <h4>Registro de dados</h4>
+          <p>Armazenamento em cartão microSD para análise pós-teste de velocidade, rotação, relação de CVT, temperatura, aceleração, inclinação, consumo elétrico e desempenho em pista.</p>
+          <pre class="code-block">timestamp,rpm_motor,rpm_cvt,velocidade,temp_motor,temp_cvt,bateria,angulo_direcao
+1000,3820,2450,28.4,82,68,12.6,3.1
+1020,3850,2470,28.8,82,68,12.6,3.3</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMAÇÃO -->
+  <section class="section section-alt" id="programacao">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">06 · Software embarcado</p>
+        <h2>Programação</h2>
+        <p>Firmware baseado em FreeRTOS, organizado em tarefas independentes e uma máquina de estados simples e previsível.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel diagram-panel">
+          <h4>Máquina de estados</h4>
+          <div class="flow-diagram vertical">
+            <div class="fnode">BOOT</div>
+            <div class="farrow vertical"></div>
+            <div class="fnode">SELF_TEST</div>
+            <div class="farrow vertical"></div>
+            <div class="fnode">READY</div>
+            <div class="farrow vertical"></div>
+            <div class="fnode">RUN</div>
+            <div class="farrow vertical"></div>
+            <div class="fnode fnode-warn">FAULT</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Tarefas (FreeRTOS)</h4>
+          <ul class="task-list">
+            <li><code>Task_Sensors</code></li>
+            <li><code>ISR_RPM_Wheel</code></li>
+            <li><code>Task_Logger</code></li>
+            <li><code>Task_Display</code></li>
+            <li><code>Task_Telemetry</code></li>
+            <li><code>Task_Health</code></li>
+          </ul>
+          <blockquote class="safety-quote">O software não deve comandar diretamente os dispositivos de segurança obrigatórios quando estes precisarem funcionar de forma independente.</blockquote>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>Testes de software</h4>
+        <div class="chip-row">
+          <span>Boot</span><span>Self-test</span><span>Watchdog</span><span>Falha de sensor</span>
+          <span>Falha de microSD</span><span>Perda de telemetria</span><span>Desligamento inesperado</span>
+          <span>Corrompimento de log</span><span>Recuperação de falhas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATERIAIS -->
+  <section class="section" id="materiais">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">07 · Materiais e BOM</p>
+        <h2>Materiais</h2>
+        <p>Lista de referência dos principais itens de eletrônica e mecânica previstos na lista de materiais (BOM).</p>
+      </div>
+
+      <div class="bom-stats">
+        <div class="bstat"><b>70+</b><small>Itens na BOM</small></div>
+        <div class="bstat"><b>2</b><small>Categorias principais</small></div>
+        <div class="bstat"><b>100%</b><small>Regulamento revisado</small></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <h4>Eletrônica</h4>
+          <div class="chip-row">
+            <span>ESP32-S3</span><span>Módulo microSD</span><span>Cartão microSD industrial</span>
+            <span>IMU</span><span>GNSS</span><span>Sensores Hall</span><span>Termopares tipo K</span>
+            <span>Conversores para termopar</span><span>Display</span><span>Conversor DC-DC</span>
+            <span>Fusíveis</span><span>Porta-fusíveis</span><span>Relés</span><span>Diodos</span>
+            <span>TVS</span><span>Conectores selados</span><span>Chicote automotivo</span><span>Caixa IP65/IP67</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h4>Mecânica</h4>
+          <div class="chip-row">
+            <span>Tubos estruturais</span><span>Chapas</span><span>Suportes</span><span>Parafusos</span>
+            <span>Porcas travantes</span><span>Buchas</span><span>Rolamentos</span><span>Amortecedores</span>
+            <span>Braços de suspensão</span><span>Cubos</span><span>Rodas</span><span>Pneus</span>
+            <span>Direção</span><span>Freios</span><span>Motor</span><span>CVT</span><span>Corrente</span>
+            <span>Engrenagens</span><span>Eixo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4>Testes elétricos sugeridos</h4>
+        <div class="chip-row">
+          <span>Continuidade</span><span>Curto-circuito</span><span>Queda de tensão</span><span>Consumo</span>
+          <span>Fusíveis</span><span>Chaves KILL</span><span>Luz de freio</span><span>Ré</span>
+          <span>Proteção de polaridade</span><span>Isolamento</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGRAS SAE -->
+  <section class="section section-alt" id="regras">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">08 · Conformidade</p>
+        <h2>Monitoramento de regras — Baja SAE Brasil</h2>
+        <p>Acompanhamento dedicado ao regulamento oficial: novas versões, emendas, informativos, requisitos de segurança, inspeção, requisitos elétricos e estruturais, prazos e entregas.</p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="panel rules-panel">
+          <div class="rules-top">
+            <div>
+              <span class="chip-tag">Monitoramento</span>
+              <h4>Status atual</h4>
+            </div>
+            <span class="status-badge"><i class="pulse"></i>Ativo</span>
+          </div>
+
+          <div class="rules-body">
+            <div class="rule-item">
+              <div>
+                <b>RATBSB — Emenda 7</b>
+                <small>Regulamento Técnico e Administrativo Baja SAE Brasil</small>
+              </div>
+              <span class="tag-ok">Vigente</span>
+            </div>
+            <div class="rule-item">
+              <div>
+                <b>Informativo 02</b>
+                <small>Desafio Técnico — Parte 1 (TV)</small>
+              </div>
+              <span class="tag-new">Novo</span>
+            </div>
+          </div>
+
+          <div class="rules-meta">
+            <span>Fonte: SAE Brasil</span>
+            <span id="lastCheck">Última verificação: —</span>
+          </div>
+
+          <label class="switch-row">
+            <span>Monitoramento automático de novas emendas</span>
+            <span class="switch" id="autoMonitorSwitch" data-active="true"><span class="knob"></span></span>
+          </label>
+
+          <p class="fine-print">O painel representa visualmente o monitoramento. A verificação automática das fontes oficiais é executada separadamente, fora deste site.</p>
+        </div>
+
+        <div class="panel">
+          <h4>Testes do veículo</h4>
+          <div class="chip-row vertical-chip">
+            <span>Aceleração</span><span>Frenagem</span><span>Curva</span><span>Inclinação</span>
+            <span>Terreno irregular</span><span>Resistência</span><span>Temperatura</span><span>Vibração</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2 roadmap-grid">
+        <div class="panel">
+          <h4>Próximas melhorias</h4>
+          <ul class="check-list">
+            <li>Modelo 3D real em .glb</li>
+            <li>Vista explodida animada</li>
+            <li>Painel de telemetria com dados reais</li>
+            <li>Banco de dados de testes</li>
+            <li>Histórico de versões do regulamento</li>
+            <li>Comparação automática entre emendas</li>
+            <li>Simulador de CVT</li>
+            <li>Mapa GNSS e gráfico de RPM × velocidade</li>
+          </ul>
+        </div>
+        <div class="panel note-panel">
+          <h4>Observação</h4>
+          <p>Este projeto é um <b>modelo acadêmico e conceitual</b> de desenvolvimento estudantil. Antes de fabricar ou competir, todos os componentes, sistemas e dimensões devem ser revisados em relação ao regulamento oficial vigente da SAE Brasil.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOADS -->
+  <section class="section" id="downloads">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">09 · Documentação</p>
+        <h2>Downloads</h2>
+        <p>Documentos técnicos de referência do projeto. Nesta versão de demonstração, os cartões representam a organização final dos arquivos.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="doc-card">
+          <span class="doc-icon">PDF</span>
+          <h4>Projeto — Eletrônica &amp; Programação</h4>
+          <p>Arquitetura elétrica, sensores, firmware e máquina de estados.</p>
+          <span class="doc-btn">Documento de referência</span>
+        </div>
+        <div class="doc-card">
+          <span class="doc-icon">MD</span>
+          <h4>README técnico</h4>
+          <p>Visão geral completa do projeto e da estrutura do site.</p>
+          <span class="doc-btn">Documento de referência</span>
+        </div>
+        <div class="doc-card">
+          <span class="doc-icon">CSV</span>
+          <h4>Exemplo de log de telemetria</h4>
+          <p>Formato de registro utilizado no cartão microSD.</p>
+          <span class="doc-btn">Documento de referência</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <span class="brand-mark">BAJA</span><span class="brand-sub">SAE&nbsp;BRASIL</span>
+      <p>Engenharia, eletrônica, programação e desenvolvimento off-road.</p>
+    </div>
+    <p class="footer-quote">“Não é só um carro. É o resultado de engenharia, esforço e paixão.”</p>
+    <p class="footer-legal">Projeto acadêmico e conceitual — consulte sempre o regulamento oficial vigente da SAE Brasil.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script type="module" src="js/scene3d.js"></script>
+</body>
+</html>

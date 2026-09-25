@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#050b14" />
+  <meta name="description" content="Projeto conceitual Baja SAE Brasil com protótipo 3D interativo, eletrônica, telemetria, materiais e monitoramento de regras." />
+  <title>Baja SAE — Projeto Off-Road</title>
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#inicio" aria-label="Ir para o início">
+        <span class="brand-symbol">B</span>
+        <span class="brand-copy"><b>BAJA</b><small>OFF-ROAD PROJECT</small></span>
+      </a>
+      <button class="mobile-menu" type="button" aria-label="Abrir menu">☰</button>
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a class="active" href="#inicio">Início</a>
+        <a href="#prototipo">Protótipo 3D</a>
+        <a href="#funcionamento">Funcionamento</a>
+        <a href="#eletronica">Eletrônica</a>
+        <a href="#materiais">Materiais</a>
+        <a href="#regras">Regras</a>
+      </nav>
+      <a class="nav-cta" href="assets/projeto-baja.pdf" download>
+        <span>↓</span> PDF técnico
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-grid-overlay" aria-hidden="true"></div>
+      <div class="wrap hero-layout">
+        <div class="hero-copy reveal">
+          <div class="hero-kicker"><i></i> ENGENHARIA • OFF-ROAD • TELEMETRIA</div>
+          <h1>PROJETO<br><span>BAJA SAE</span></h1>
+          <p class="hero-lead">Um conceito técnico de veículo off-road padrão Baja, reunindo estrutura tubular, suspensão, transmissão CVT, eletrônica embarcada, aquisição de dados e validação orientada pelas regras da competição.</p>
+          <div class="hero-actions">
+            <a href="#prototipo" class="btn primary">Explorar protótipo 3D <span>→</span></a>
+            <a href="SAE BRASIL/baja.html" class="btn ghost">Ver arquitetura técnica</a>
+          </div>
+          <div class="hero-metrics">
+            <div><strong>4</strong><small>rodas off-road</small></div>
+            <div><strong>12 V</strong><small>rede de instrumentação</small></div>
+            <div><strong>100 Hz</strong><small>aquisição IMU</small></div>
+            <div><strong>ESP32-S3</strong><small>DAQ principal</small></div>
+          </div>
+        </div>
+
+        <div class="hero-showcase reveal">
+          <div class="showcase-shell">
+            <img src="assets/hero-baja.png" alt="Exemplo visual de veículo Baja SAE em terreno off-road" />
+            <div class="showcase-vignette"></div>
+            <span class="pin pin-a"><i></i><b>Chassi tubular</b></span>
+            <span class="pin pin-b"><i></i><b>Motor + CVT</b></span>
+            <span class="pin pin-c"><i></i><b>Suspensão</b></span>
+            <div class="hero-rule-chip"><span class="pulse"></span> Monitoramento SAE ativo</div>
+          </div>
+          <div class="floating-card floating-a">
+            <span>REGRA BASE</span><b>RATBSB — Emenda 7</b><small>Nacional 2027</small>
+          </div>
+          <div class="floating-card floating-b">
+            <span>PRÓXIMO MARCO</span><b>30/09/2026</b><small>Desafio Técnico TV — Parte 1</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-strip">
+      <div class="wrap feature-grid">
+        <article class="feature-card reveal"><span>01</span><div><b>Estrutura</b><small>Gaiola tubular e proteção do piloto</small></div><em>↗</em></article>
+        <article class="feature-card reveal"><span>02</span><div><b>Suspensão</b><small>Curso, absorção e contato com o solo</small></div><em>↗</em></article>
+        <article class="feature-card reveal"><span>03</span><div><b>Transmissão</b><small>Motor, CVT e redução final</small></div><em>↗</em></article>
+        <article class="feature-card reveal"><span>04</span><div><b>Eletrônica</b><small>Sensores, logger e display</small></div><em>↗</em></article>
+        <article class="feature-card reveal"><span>05</span><div><b>Segurança</b><small>Proteções e circuitos independentes</small></div><em>↗</em></article>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="prototipo">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">PROTÓTIPO INTERATIVO</span><h2>Explore o Baja em 3D</h2></div>
+          <p>Arraste para girar, use a roda do mouse para aproximar e destaque os subsistemas. O modelo é esquemático e serve para estudo de arquitetura.</p>
+        </div>
+
+        <div class="prototype-grid">
+          <aside class="parts-panel glass reveal">
+            <span class="panel-label">VISUALIZAÇÃO</span>
+            <button class="part-btn active" data-focus="all"><i>◈</i><span><b>Veículo completo</b><small>Todos os sistemas</small></span></button>
+            <button class="part-btn" data-focus="frame"><i>◇</i><span><b>Chassi tubular</b><small>Estrutura principal</small></span></button>
+            <button class="part-btn" data-focus="susp"><i>⌁</i><span><b>Suspensão</b><small>Bandejas e amortecedores</small></span></button>
+            <button class="part-btn" data-focus="power"><i>⚙</i><span><b>Motor + CVT</b><small>Transmissão de potência</small></span></button>
+            <button class="part-btn" data-focus="electronics"><i>▦</i><span><b>Eletrônica</b><small>DAQ e sensores</small></span></button>
+            <div class="panel-actions">
+              <button id="autoRotate" type="button">⟳ Auto-rotação</button>
+              <button id="reset3d" type="button">⌂ Reset</button>
+            </div>
+          </aside>
+
+          <div class="viewer-card reveal">
+            <div class="viewer-topline"><span><i class="live"></i> MODELO 3D ESQUEMÁTICO</span><span id="viewerState">VISÃO COMPLETA</span></div>
+            <canvas id="baja3d" aria-label="Modelo 3D esquemático interativo do veículo Baja"></canvas>
+            <div class="viewer-hint">Arraste para girar • Scroll para zoom</div>
+            <div class="viewer-legend"><span><i class="c-frame"></i> Estrutura</span><span><i class="c-susp"></i> Suspensão</span><span><i class="c-power"></i> Powertrain</span><span><i class="c-elec"></i> Eletrônica</span></div>
+          </div>
+
+          <aside class="dimension-card glass reveal">
+            <span class="panel-label">LEITURA DO MODELO</span>
+            <div class="dimension-row"><span>Arquitetura</span><b>4 rodas</b></div>
+            <div class="dimension-row"><span>Estrutura</span><b>Tubular</b></div>
+            <div class="dimension-row"><span>Transmissão</span><b>CVT</b></div>
+            <div class="dimension-row"><span>Aquisição</span><b>100 Hz</b></div>
+            <div class="dimension-row"><span>Telemetria</span><b>Opcional</b></div>
+            <div class="dimension-note">Dimensões e componentes devem ser definidos pela equipe a partir do projeto real e do regulamento vigente.</div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="funcionamento">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">COMO FUNCIONA</span><h2>Do motor ao solo</h2></div>
+          <p>O fluxo abaixo mostra, de forma simplificada, como energia mecânica e informações eletrônicas percorrem o veículo.</p>
+        </div>
+        <div class="function-grid">
+          <div class="function-visual reveal">
+            <img src="assets/funcionamento-sistemas.png" alt="Infográfico explicando os sistemas de um Baja SAE" />
+            <button class="image-zoom" data-image="assets/funcionamento-sistemas.png">↗ Ampliar vista explicada</button>
+          </div>
+          <div class="function-tabs reveal">
+            <div class="tab-buttons" role="tablist">
+              <button class="tab active" data-tab="cvt">CVT</button>
+              <button class="tab" data-tab="suspensao">Suspensão</button>
+              <button class="tab" data-tab="direcao">Direção</button>
+              <button class="tab" data-tab="freios">Freios</button>
+            </div>
+            <div class="tab-content active" data-content="cvt">
+              <span class="tab-index">01</span><h3>Motor + transmissão CVT</h3>
+              <p>O motor entrega torque à polia primária. A correia da CVT transmite potência para a polia secundária, variando a relação conforme rotação e carga. A redução final leva o torque ao eixo motriz.</p>
+              <ol><li>Motor fornece potência.</li><li>CVT adapta automaticamente a relação.</li><li>Redução final multiplica o torque.</li><li>Rodas traseiras geram tração.</li></ol>
+            </div>
+            <div class="tab-content" data-content="suspensao">
+              <span class="tab-index">02</span><h3>Suspensão independente</h3>
+              <p>As bandejas controlam o movimento das rodas e os amortecedores dissipam energia dos impactos. O objetivo é preservar contato do pneu com o solo, estabilidade e controle.</p>
+              <ol><li>Bandejas guiam a roda.</li><li>Mola sustenta a massa.</li><li>Amortecedor controla oscilações.</li><li>Geometria influencia estabilidade.</li></ol>
+            </div>
+            <div class="tab-content" data-content="direcao">
+              <span class="tab-index">03</span><h3>Sistema de direção</h3>
+              <p>O volante transfere movimento ao mecanismo de direção e às barras, alterando o ângulo das rodas dianteiras. Geometria e folgas devem ser controladas para garantir precisão e segurança.</p>
+              <ol><li>Entrada pelo volante.</li><li>Mecanismo converte o movimento.</li><li>Barras acionam as mangas.</li><li>Rodas esterçam de forma coordenada.</li></ol>
+            </div>
+            <div class="tab-content" data-content="freios">
+              <span class="tab-index">04</span><h3>Sistema de freios</h3>
+              <p>O pedal pressuriza o circuito hidráulico e os cálipers convertem pressão em força de frenagem nos discos. A instrumentação pode registrar estado e pressão sem assumir funções críticas.</p>
+              <ol><li>Piloto aplica força no pedal.</li><li>Cilindro mestre gera pressão.</li><li>Cálipers comprimem pastilhas.</li><li>Discos dissipam energia.</li></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dashboard" id="eletronica">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">ELETRÔNICA EMBARCADA</span><h2>Instrumentação + telemetria</h2></div>
+          <p>Um painel de teste simula o comportamento da aquisição de dados. Os valores são demonstrativos e não representam medições reais.</p>
+        </div>
+
+        <div class="dash-grid">
+          <article class="telemetry-card glass reveal">
+            <div class="card-title"><div><span>TELEMETRIA SIMULADA</span><h3>Dados em tempo real</h3></div><span class="status-live"><i></i> LIVE</span></div>
+            <div class="gauges">
+              <div class="gauge"><div class="gauge-ring" data-gauge="rpm"><div><b id="rpmValue">3820</b><small>RPM</small></div></div><span>Motor / CVT</span></div>
+              <div class="gauge"><div class="gauge-ring cyan" data-gauge="speed"><div><b id="speedValue">28</b><small>km/h</small></div></div><span>Velocidade</span></div>
+              <div class="gauge"><div class="gauge-ring green" data-gauge="battery"><div><b id="batteryValue">12.6</b><small>V</small></div></div><span>Bateria</span></div>
+            </div>
+            <div class="mini-charts">
+              <div><span>Temperatura</span><b id="tempValue">82 °C</b><svg viewBox="0 0 160 42" preserveAspectRatio="none"><polyline id="tempLine" points="0,30 20,29 40,27 60,26 80,24 100,22 120,20 140,19 160,17"/></svg></div>
+              <div><span>Inclinação</span><b id="tiltValue">7.4°</b><svg viewBox="0 0 160 42" preserveAspectRatio="none"><polyline id="tiltLine" points="0,22 20,24 40,20 60,23 80,18 100,20 120,17 140,18 160,14"/></svg></div>
+            </div>
+          </article>
+
+          <article class="architecture-card glass reveal">
+            <div class="card-title"><div><span>ARQUITETURA</span><h3>Fluxo de dados</h3></div></div>
+            <div class="architecture-flow">
+              <div class="arch-node sensor"><b>Sensores</b><small>RPM • roda • direção • temperatura</small></div>
+              <span>→</span>
+              <div class="arch-node core"><b>ESP32-S3</b><small>DAQ + FreeRTOS</small></div>
+              <span>→</span>
+              <div class="arch-stack"><div class="arch-node"><b>microSD</b><small>log local</small></div><div class="arch-node"><b>Display</b><small>alertas</small></div><div class="arch-node"><b>LoRa</b><small>opcional</small></div></div>
+            </div>
+            <div class="safety-note"><b>Princípio de segurança:</b> funções críticas não devem depender do software de instrumentação.</div>
+          </article>
+        </div>
+
+        <div class="diagram-grid">
+          <article class="diagram-card reveal"><div><span>01</span><h3>Esquema elétrico</h3></div><img src="assets/esquema-eletrico.png" alt="Esquema elétrico base"><button data-image="assets/esquema-eletrico.png">Abrir diagrama</button></article>
+          <article class="diagram-card reveal"><div><span>02</span><h3>Instrumentação</h3></div><img src="assets/instrumentacao.png" alt="Arquitetura de instrumentação"><button data-image="assets/instrumentacao.png">Abrir diagrama</button></article>
+          <article class="diagram-card reveal"><div><span>03</span><h3>Software</h3></div><img src="assets/arquitetura-software.png" alt="Arquitetura de software"><button data-image="assets/arquitetura-software.png">Abrir diagrama</button></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="materiais">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div><span class="eyebrow">MATERIAIS</span><h2>BOM eletrônica inicial</h2></div>
+          <p>Componentes base para um sistema de instrumentação. A seleção final deve considerar disponibilidade, vibração, temperatura, vedação e regras vigentes.</p>
+        </div>
+        <div class="bom-grid reveal">
+          <article><i>▦</i><span><b>ESP32-S3</b><small>Controlador DAQ</small></span><em>01</em></article>
+          <article><i>⌖</i><span><b>GNSS 10 Hz</b><small>Posição e velocidade</small></span><em>01</em></article>
+          <article><i>◇</i><span><b>IMU 6 eixos</b><small>Movimento do veículo</small></span><em>01</em></article>
+          <article><i>▣</i><span><b>microSD</b><small>Registro local</small></span><em>01</em></article>
+          <article><i>⌁</i><span><b>LoRa</b><small>Telemetria opcional</small></span><em>02</em></article>
+          <article><i>∩</i><span><b>Sensores Hall</b><small>RPM e roda</small></span><em>03+</em></article>
+          <article><i>♨</i><span><b>Termopar K</b><small>Temperatura</small></span><em>02</em></article>
+          <article><i>⬡</i><span><b>Conectores IP67</b><small>Chicote robusto</small></span><em>kit</em></article>
+          <article><i>⚡</i><span><b>Fusíveis</b><small>Proteção de circuitos</small></span><em>kit</em></article>
+          <article><i>▤</i><span><b>Display</b><small>Interface do piloto</small></span><em>01</em></article>
+        </div>
+        <div class="pdf-banner reveal">
+          <div class="pdf-icon">PDF</div>
+          <div><span>DOCUMENTAÇÃO COMPLETA</span><h3>Projeto de eletrônica e programação</h3><p>Arquitetura, lista de materiais, testes e recomendações técnicas.</p></div>
+          <a href="assets/projeto-baja.pdf" class="btn primary" download>Baixar PDF <span>↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rules-section" id="regras">
+      <div class="wrap">
+        <div class="rules-shell reveal">
+          <div class="rules-heading">
+            <div><span class="eyebrow">MONITORAMENTO</span><h2>Regras Baja SAE</h2><p>O site mostra o estado conhecido; a tarefa agendada no ChatGPT realiza a verificação recorrente e envia alertas quando houver mudança relevante.</p></div>
+            <span class="monitor-badge"><i></i> MONITORAMENTO ATIVO</span>
+          </div>
+
+          <div class="rules-grid">
+            <article class="rule-current">
+              <div class="rule-top"><span>REGRA BASE DA NACIONAL 2027</span><em>VIGENTE</em></div>
+              <h3>RATBSB — Emenda 7</h3>
+              <p>Adotado para a 32ª Competição Baja SAE BRASIL — Etapa Nacional 2027. Alterações específicas podem ser comunicadas por novos informativos oficiais.</p>
+              <div class="rule-actions"><a target="_blank" rel="noreferrer" href="https://saebrasil.org.br/programas-estudantis/baja-sae-brasil/regras-e-templates/">Regras e templates ↗</a><a target="_blank" rel="noreferrer" href="https://arquivos.saebrasil.org.br/2027/BajaNacional/Informativo01-AdocaodoRATBSBEmenda7.pdf">Informativo 01 ↗</a></div>
+            </article>
+
+            <article class="deadline-card">
+              <span>PRÓXIMO PRAZO CONHECIDO</span><h3>30 SET 2026</h3><p>Entrega da Parte 1 do Desafio Técnico TV.</p>
+              <div class="countdown"><div><b id="daysLeft">--</b><small>dias</small></div><div><b id="hoursLeft">--</b><small>horas</small></div><div><b id="minsLeft">--</b><small>min</small></div></div>
+              <a target="_blank" rel="noreferrer" href="https://arquivos.saebrasil.org.br/2027/BajaNacional/Informativo02-InformacoessobreaprovadeRelatoriodeDesafioTecnicoParte1.pdf">Abrir Informativo 02 ↗</a>
+            </article>
+
+            <article class="monitor-card">
+              <div class="monitor-row"><span>Verificação recorrente</span><b>Ativa</b></div>
+              <div class="monitor-row"><span>Fonte prioritária</span><b>SAE BRASIL</b></div>
+              <div class="monitor-row"><span>Escopo</span><b>Regras + informativos</b></div>
+              <div class="monitor-row"><span>Notificação</span><b>Somente mudança relevante</b></div>
+              <a target="_blank" rel="noreferrer" href="https://saebrasil.org.br/programas-estudantis/baja-sae-brasil/mensagens-e-informativos/">Abrir informativos oficiais ↗</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div class="brand footer-brand"><span class="brand-symbol">B</span><span class="brand-copy"><b>BAJA</b><small>OFF-ROAD PROJECT</small></span></div>
+      <p>Projeto acadêmico conceitual para estudo e desenvolvimento. Não representa página oficial da SAE BRASIL.</p>
+      <a href="#inicio">Voltar ao topo ↑</a>
+    </div>
+  </footer>
+
+  <dialog id="imageModal">
+    <button class="modal-close" type="button" aria-label="Fechar">×</button>
+    <img alt="Visualização ampliada" />
+  </dialog>
+
+  <script src="js/script.js" defer></script>
+
+</body>
+</html>
